@@ -75,12 +75,6 @@ function onMouseMove(event) {
   mouse.x = (event.clientX/window.innerWidth)*2 - 1;
   mouse.y = -(event.clientY/window.innerHeight)*2 + 1;
 
-}
-
-function render() {
-  requestAnimationFrame(render);
-  rotateMesh();
-
   // Raycaster
   // Update the picking ray with the camera and mouse position.
   raycaster.setFromCamera(mouse, camera);
@@ -89,10 +83,33 @@ function render() {
   let intersects = raycaster.intersectObjects(scene.children);
 
   if (intersects.length) {
-    console.log("hello");
-    alert("hello");
+    // console.log("hello");
+    // // alert("hello");
+    // let foo = true;
+    // let step = 0;
+    // while(foo) {
+    //   step++;
+
+      mesh.translateX(0.05);
+      mesh.translateY(0.05);
+      mesh.translateZ(0.05); 
+
+    //   if (step>= 40) {
+    //     foo = false;
+    //   }
+    // }
+    // mesh.position.x += 1;
+    // mesh.position.y += 1;
 
   }
+
+}
+
+function render() {
+  requestAnimationFrame(render);
+  rotateMesh();
+
+
   renderer.render(scene,camera);
 }
 
