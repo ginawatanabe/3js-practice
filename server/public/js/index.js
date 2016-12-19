@@ -58,11 +58,45 @@ function rotateMesh() {
   mesh.rotation.z -= SPEED*3;
 }
 
+//Click events
+// let projector = new THREE.Projector();
+let raycaster = new THREE.Raycaster();
+// This is for mousemove
+let mouse = new THREE.Vector2();
+// This is for mouseclick
+// let mouse_vector = new THREE.Vector2();
+
+// function onMouseMove(event) {
+//   mouse.x = (event.clientX/window.innerWidth) * 2 - 1;
+//   mouse.y = - (event.clientY/window.innerHeight)* 2 + 1;
+// }
+function onMouseMove(event) {
+
+  mouse.x = (event.clientX/window.innerWidth)*2 - 1;
+  mouse.y = -(event.clientY/window.innerHeight)*2 + 1;
+
+}
+
 function render() {
   requestAnimationFrame(render);
   rotateMesh();
+
+  // Raycaster
+  // Update the picking ray with the camera and mouse position.
+  raycaster.setFromCamera(mouse, camera);
+
+  // Calculate objects intersecting the picking ray
+  let intersects = raycaster.intersectObjects(scene.children);
+
+  if (intersects.length) {
+    console.log("hello");
+    alert("hello");
+
+  }
   renderer.render(scene,camera);
 }
+
+window.addEventListener('mousemove',onMouseMove, false);
 
 init();
 render();
