@@ -1,3 +1,8 @@
+
+let position = { x : 0, y : 0};
+let target = { x : 3, y : 3};
+let tween = new TWEEN.Tween(position).to(target, 2000);
+
 let scene, camera, renderer;
 
 const WIDTH = window.innerWidth;
@@ -45,8 +50,6 @@ function initMesh() {
     mesh.translation = THREE.GeometryUtils.center(geometry);
     scene.add(mesh);
   })
-  // cube = new THREE.Mesh(new THREE.CubeGeometry(2,2,2),new THREE.MeshNormalMaterial());
-  // scene.add(cube);
 }
 
 function rotateMesh() {
@@ -59,17 +62,10 @@ function rotateMesh() {
 }
 
 //Click events
-// let projector = new THREE.Projector();
 let raycaster = new THREE.Raycaster();
 // This is for mousemove
 let mouse = new THREE.Vector2();
-// This is for mouseclick
-// let mouse_vector = new THREE.Vector2();
 
-// function onMouseMove(event) {
-//   mouse.x = (event.clientX/window.innerWidth) * 2 - 1;
-//   mouse.y = - (event.clientY/window.innerHeight)* 2 + 1;
-// }
 function onMouseMove(event) {
 
   mouse.x = (event.clientX/window.innerWidth)*2 - 1;
@@ -83,33 +79,20 @@ function onMouseMove(event) {
   let intersects = raycaster.intersectObjects(scene.children);
 
   if (intersects.length) {
-    // console.log("hello");
-    // // alert("hello");
-    // let foo = true;
-    // let step = 0;
-    // while(foo) {
-    //   step++;
+    console.log("hello");
 
-      mesh.translateX(0.05);
-      mesh.translateY(0.05);
-      mesh.translateZ(0.05); 
-
-    //   if (step>= 40) {
-    //     foo = false;
-    //   }
-    // }
-    // mesh.position.x += 1;
-    // mesh.position.y += 1;
-
+    tween.onUpdate(function(){
+      mesh.position.x = position.x;
+      mesh.position.y = position.y;
+    })
+    tween.start();
   }
-
 }
 
 function render() {
   requestAnimationFrame(render);
   rotateMesh();
-
-
+  TWEEN.update();
   renderer.render(scene,camera);
 }
 
