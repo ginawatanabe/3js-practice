@@ -5,7 +5,9 @@ window.onload = function() {
   }
 
   //3js and tweening functions
-  let position = { x : 0, y : 0};
+  let startx = 1;
+  let starty = -2;
+  let position = { x : startx, y : starty};
   let target = { x : 3, y : 3};
   let tween = new TWEEN.Tween(position).to(target, 2000);
 
@@ -17,7 +19,7 @@ window.onload = function() {
   const VIEW_ANGLE = 70;
   const ASPECT = WIDTH/HEIGHT;
   const NEAR = 1;
-  const FAR = 10;
+  const FAR = 100;
 
   const SPEED = 0.01;
   let cube;
@@ -46,33 +48,41 @@ window.onload = function() {
     let light = new THREE.AmbientLight(0xffffff);
     scene.add(light);
   }
-
   let mesh = null;
-  // let mesh1 = null;
   function initMesh() {
     let loader = new THREE.JSONLoader();
-    loader.load('models/marmelab.json', function(geometry, materials) {
-      mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
-      mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.75;
-      mesh.translation = THREE.GeometryUtils.center(geometry);
-      scene.add(mesh);
-    })
+    for (i = 0; i<5; i++) {
+      loader.load('models/marmelab.json', function(geometry, materials) {
+        mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
+        // mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.75;
+        mesh.translation = THREE.GeometryUtils.center(geometry);
+        mesh.position.x = Math.random() * 8 - 6;
+        mesh.position.y = Math.random() * 8 - 6;
+        mesh.position.z = Math.random() * 8 - 6;
 
-    // loader.load('models/ring.json', function(geometry, materials) {
-    //   mesh1 = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
-    //   mesh1.scale.x = mesh1.scale.y = mesh1.scale.z = 0.75;
-    //   mesh1.translation = THREE.GeometryUtils.center(geometry);
-    //   scene.add(mesh1);
-    // })
+        mesh.rotation.x = Math.random()*2*Math.PI;
+        mesh.rotation.y = Math.random()*2*Math.PI;
+        mesh.rotation.z = Math.random()*2*Math.PI;
+
+
+        scene.add(mesh);
+      })
+    }
   }
 
   function rotateMesh() {
     if (!mesh) {
       return;
     }
-    mesh.rotation.x -= SPEED*2;
-    mesh.rotation.y -= SPEED;
-    mesh.rotation.z -= SPEED*3;
+
+    for(i = 0; i<scene.children.length; i++) {
+      scene.children[i].rotation.x -= SPEED*2;
+      scene.children[i].rotation.y -= SPEED;
+      scene.children[i].rotation.z -= SPEED*3;
+    }
+    // mesh.rotation.x -= SPEED*2;
+    // mesh.rotation.y -= SPEED;
+    // mesh.rotation.z -= SPEED*3;
   }
 
   //Click events
