@@ -1,16 +1,5 @@
 window.onload = function() {
 
-  window.onclick = function() {
-    console.log("OMGIGGG");
-  }
-
-  //3js and tweening functions
-  let startx = 1;
-  let starty = -2;
-  let position = { x : startx, y : starty};
-  let target = { x : 3, y : 3};
-  let tween = new TWEEN.Tween(position).to(target, 2000);
-
   let scene, camera, renderer;
 
   const WIDTH = window.innerWidth;
@@ -48,7 +37,9 @@ window.onload = function() {
     let light = new THREE.AmbientLight(0xffffff);
     scene.add(light);
   }
+
   let mesh = null;
+
   function initMesh() {
     let loader = new THREE.JSONLoader();
     for (i = 0; i<5; i++) {
@@ -63,7 +54,6 @@ window.onload = function() {
         mesh.rotation.x = Math.random()*2*Math.PI;
         mesh.rotation.y = Math.random()*2*Math.PI;
         mesh.rotation.z = Math.random()*2*Math.PI;
-
 
         scene.add(mesh);
       })
@@ -80,67 +70,97 @@ window.onload = function() {
       scene.children[i].rotation.y -= SPEED;
       scene.children[i].rotation.z -= SPEED*3;
     }
-    // mesh.rotation.x -= SPEED*2;
-    // mesh.rotation.y -= SPEED;
-    // mesh.rotation.z -= SPEED*3;
   }
+
+  //Tween initialization
+  let startx, starty;
+  let position = { x : startx, y : starty};
+  let target = { x : 5, y : 3};
+  let tween = new TWEEN.Tween(position).to(target, 2000);
 
   //Click events
   let raycaster = new THREE.Raycaster();
+
   // This is for mousemove
   let mouse = new THREE.Vector2();
 
-  function onMouseDown(event) {
-    event.preventDefault();
+  //Dragging
+  let isDragging = false;
 
+  function onMouseDown(event) {
+    isDragging = true;
+
+    event.preventDefault();
     mouse.x = (event.clientX/window.innerWidth)*2 - 1;
     mouse.y = -(event.clientY/window.innerHeight)*2 + 1;
-
     mouse.set(mouse.x, mouse.y, mouse.z);
-
     raycaster.setFromCamera(mouse, camera);
-
     let intersects = raycaster.intersectObjects(scene.children);
 
-    if (intersects.length) {
-      tween.onUpdate(function(){
-        mesh.position.x = position.x;
-        mesh.position.y = position.y;
-      })
+    startx = mouse.y;
+    starty = mouse.x;
+
+    for (i = 0; i<intersects.length; i++) {
       tween.start();
+
+      let intersection = intersects[i]
+      let obj = intersection.object;
+      tween.onUpdate(function(){
+        obj.position.x = position.x;
+        obj.position.y = position.y;
+      })
+
+      console.log(obj.id);
     }
   }
 
-  function onMouseMove(event) {
+  function onMouseUp(event) {
+    isDragging = false;
+  }
 
+  function onMouseMove(event) {
     mouse.x = (event.clientX/window.innerWidth)*2 - 1;
     mouse.y = -(event.clientY/window.innerHeight)*2 + 1;
-
     // Raycaster
     // Update the picking ray with the camera and mouse position.
     raycaster.setFromCamera(mouse, camera);
-
     // Calculate objects intersecting the picking ray
     let intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length) {
-      console.log("hello");
+        console.log("hello");
+    }
 
+    if (isDragging) {
+      let deltaX = event.clientX - mouse.x,
+      deltaY = event.clientY - mouse.y;
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+      rotateScene(deltaX, deltaY);
+    }
+  }
 
+  function rotateScene(deltaX, deltaY) {
+    let intersects = raycaster.intersectObjects(scene.children);
+    for (i = 0; i<intersects.length; i++) {
+      let intersection = intersects[i]
+      let obj = intersection.object;
+      obj.rotation.y += deltaX/10000;
+      obj.rotation.x += deltaY/10000;
     }
   }
 
   function render() {
     requestAnimationFrame(render);
-    rotateMesh();
-    // tween.position.chain(tween.target);
-    // tween.target.chain(tween.position);
+    // rotateMesh();
+
     TWEEN.update();
     renderer.render(scene,camera);
   }
 
   window.addEventListener('mousemove',onMouseMove, false);
   window.addEventListener('mousedown', onMouseDown, false);
+  window.addEventListener('mouseup', onMouseUp, false);
 
   init();
   render();
