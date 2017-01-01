@@ -73,10 +73,9 @@ window.onload = function() {
   }
 
   //Tween initialization
-  let startx, starty;
-  let position = { x : startx, y : starty};
-  let target = { x : 5, y : 3};
-  let tween = new TWEEN.Tween(position).to(target, 2000);
+  let position = {x : 0, y : 0};
+
+  // let tween = new TWEEN.Tween(position).to(target, 2000);
 
   //Click events
   let raycaster = new THREE.Raycaster();
@@ -88,29 +87,43 @@ window.onload = function() {
   let isDragging = false;
 
   function onMouseDown(event) {
-    isDragging = true;
-
     event.preventDefault();
+    isDragging = true;
+    // debugger;
+
     mouse.x = (event.clientX/window.innerWidth)*2 - 1;
     mouse.y = -(event.clientY/window.innerHeight)*2 + 1;
     mouse.set(mouse.x, mouse.y, mouse.z);
     raycaster.setFromCamera(mouse, camera);
     let intersects = raycaster.intersectObjects(scene.children);
 
-    startx = mouse.y;
-    starty = mouse.x;
+    //If mouse intersects the object...
+    if (intersects.length) {
+      //Get the first object and move it using tween.js.
+      let intersection = intersects[0]
+      let obj = intersection.object;
+      let target = {
+        x : Math.random()*8-6,
+        y : Math.random()*8-6
+      };
+      //Set tween starting position coordinates to the object's current position.
+      position.x = obj.position.x;
+      position.y = obj.position.y;
 
-    for (i = 0; i<intersects.length; i++) {
+      //Initialize tween.
+      let tween = new TWEEN.Tween(position).to(target, 1000);
+
       tween.start();
 
-      let intersection = intersects[i]
-      let obj = intersection.object;
+      //On tween update, have object increment towards targeted position.
       tween.onUpdate(function(){
         obj.position.x = position.x;
         obj.position.y = position.y;
       })
 
       console.log(obj.id);
+      // console.log("startx and starty are: " + startx + " " + starty);
+      console.log("ClientX and Y are: " + event.clientX + " " + event.clientY);
     }
   }
 
