@@ -1,0 +1,12 @@
+html, body, p, ul, h1, h2, h3, h4, h5 {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+nav {
+  height: 50px;
+  width: auto;
+  background-color: pink;
+  display: flex;
+  justify-content: center; 
+}

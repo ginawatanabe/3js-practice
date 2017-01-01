@@ -1,7 +1,5 @@
 window.onload = function() {
-let container = document.getElementById('canvas');
 
-//3js
   let scene, camera, renderer;
 
   const WIDTH = window.innerWidth;
@@ -21,7 +19,7 @@ let container = document.getElementById('canvas');
     initMesh();
     initCamera();
     initRenderer();
-    container.appendChild(renderer.domElement);
+    document.body.appendChild(renderer.domElement);
   }
 
   function initCamera() {
@@ -50,7 +48,7 @@ let container = document.getElementById('canvas');
         // mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.75;
         mesh.translation = THREE.GeometryUtils.center(geometry);
         mesh.position.x = Math.random() * 8 - 6;
-        mesh.position.y = Math.random() * 8 - 7;
+        mesh.position.y = Math.random() * 8 - 6;
         mesh.position.z = Math.random() * 8 - 6;
 
         mesh.rotation.x = Math.random()*2*Math.PI;

@@ -1,0 +1,35 @@
+html, body, p, ul, h1, h2, h3, h4, h5 {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+nav {
+  height: 100px;
+  width: auto;
+  /*background-color: pink;*/
+  display: flex;
+  justify-content: flex-end;
+}
+
+ul {
+  /*background-color: orange;*/
+  width: 300px;
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-right: 200px;
+}
+
+#canvas {
+  height: 1000px;
+  width: inherit;
+  /*background-color: red;*/
+}

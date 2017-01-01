@@ -4,12 +4,22 @@ html(lang='en')
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    link(rel='stylesheet', href='/css/styles.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Open+Sans')
     title Document
     style.
       body { margin: 0;}
       canvas { width: 100%; height: 100%}
   body
     .container
+      nav
+        ul
+          li
+            h3 Brian
+          li
+            h3 About
+
+      #canvas
     script(src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js")
     script(src='/js/three.min.js')
     script(src='/js/index.js')
