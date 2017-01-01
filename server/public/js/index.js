@@ -111,7 +111,7 @@ window.onload = function() {
       position.y = obj.position.y;
 
       //Initialize tween.
-      let tween = new TWEEN.Tween(position).to(target, 1000);
+      let tween = new TWEEN.Tween(position).to(target, 200);
 
       tween.start();
 
@@ -120,10 +120,6 @@ window.onload = function() {
         obj.position.x = position.x;
         obj.position.y = position.y;
       })
-
-      console.log(obj.id);
-      // console.log("startx and starty are: " + startx + " " + starty);
-      console.log("ClientX and Y are: " + event.clientX + " " + event.clientY);
     }
   }
 
@@ -155,9 +151,11 @@ window.onload = function() {
 
   function rotateScene(deltaX, deltaY) {
     let intersects = raycaster.intersectObjects(scene.children);
-    for (i = 0; i<intersects.length; i++) {
-      let intersection = intersects[i]
+
+    if (intersects.length) {
+      let intersection = intersects[0];
       let obj = intersection.object;
+
       obj.rotation.y += deltaX/10000;
       obj.rotation.x += deltaY/10000;
     }
@@ -166,7 +164,6 @@ window.onload = function() {
   function render() {
     requestAnimationFrame(render);
     // rotateMesh();
-
     TWEEN.update();
     renderer.render(scene,camera);
   }
